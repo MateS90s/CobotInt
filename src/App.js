@@ -16,7 +16,14 @@ function App() {
       <div className="app-container">
         <TopBar />
         <LeftBar />
-
+        <div>
+        <Routes>
+            <Route path="/" element={<StartPage />} />  
+            <Route path="/logging" element={<Logging />} />
+            <Route path="/pilot" element={<Pilot />} />
+            <Route path="/program-builder" element={<ProgramBuilder />} />
+        </Routes>
+        </div>
       </div>
     </Router>
   );
