@@ -1,0 +1,7 @@
+@import '../ComponentStylesMain.scss'; /* Importuj plik z definicją .content */
+
+.pilot-content {
+  @extend .content; /* Dziedziczenie stylów z klasy .content */
+  background-color: #f0f0f0; /* Kolor tła dla pilot content */
+  /* Inne style dla pilota */
+}

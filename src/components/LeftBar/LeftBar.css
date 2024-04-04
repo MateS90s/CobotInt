@@ -1,0 +1,10 @@
+.left-bar {
+    position: fixed;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    background-color: #ccc;
+    z-index: 999; /* Ustawienie niższej wartości z-index */
+  }
+  
