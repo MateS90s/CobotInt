@@ -6,5 +6,5 @@
     width: 200px;
     background-color: #ccc;
     z-index: 999; /* Ustawienie niższej wartości z-index */
+    list-style-type: none;
   }
-  

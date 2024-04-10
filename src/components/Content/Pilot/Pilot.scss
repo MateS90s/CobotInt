@@ -5,3 +5,35 @@
   background-color: #f0f0f0; /* Kolor tła dla pilot content */
   /* Inne style dla pilota */
 }
+
+.arrow-button {
+  position: relative;
+  background-color: transparent;
+  color: #007bff; /* Kolor tekstu */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px; /* Wielkość i odstępy wewnętrzne */
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.arrow-button::before {
+  content: '';
+  position: absolute;
+  top: -15px; /* Odległość strzałki od tekstu */
+  left: calc(50% - 10px); /* Centralizacja strzałki */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #007bff; /* Kolor strzałki */
+}
+
+.arrow-button:hover {
+  color: #0056b3; /* Zmiana koloru tekstu po najechaniu myszką */
+}
+
+.arrow-button:active {
+  color: #003366; /* Zmiana koloru tekstu po kliknięciu */
+}
