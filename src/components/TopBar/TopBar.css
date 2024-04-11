@@ -40,3 +40,22 @@ nav ul {
   color: #ffcc00; /* Inny kolor tekstu */
   font-size: 24px; /* Inny rozmiar tekstu */
   }
+
+  .connection-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: green;
+    margin-left: 10px;
+    display: inline-block;
+    }
+
+    .connection-indicator span {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 25px; /* Dodatkowy margines między kropką a napisem */
+    }
+
+.disconnected {
+    background-color: red;
+}
