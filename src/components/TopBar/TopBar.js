@@ -1,42 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom'; // Importuj Link zamiast a
-import ROSLIB from 'roslib';
+
 
 
 import './TopBar.css'
 
-function TopBar() {
-  const [ros, setRos] = useState(null);
-  const [connectionStatus, setConnectionStatus] = useState('disconnected')
-  
+function TopBar( {connectionStatus, connectButton, disconnecttButton }) {
 
-
-  const connectionToRosbridge = () => {
-    const newRos = new ROSLIB.Ros({ url: "ws://localhost:9091" });
-  
-
-    newRos.on("connection", () => {
-        setConnectionStatus("connected");
-    });
-
-    newRos.on("error", (error) => {
-      setConnectionStatus(`errored out (${error})`);git stat
-    });
-
-    newRos.on("close", () => {
-      setConnectionStatus("closed");
-    });
-
-    setRos(newRos);
-  };
-
-  const disconnectFromRosbridge = () => {
-    if (ros) {
-      ros.close();
-      setRos(null);
-      setConnectionStatus("disconnected");
-    }
-  };
 
     return (
       <div className="top-bar">
@@ -49,8 +19,8 @@ function TopBar() {
             <li><Link to="/pilot">Pilot</Link></li>
             <li><Link to="/program-builder">Program builder</Link></li>
             <li>
-              <button onClick={connectionToRosbridge}>Połącz</button>
-              <button onClick={disconnectFromRosbridge}>Rozlącz</button>
+              <button onClick={connectButton}>Połącz</button>
+              <button onClick={disconnecttButton}>Rozlącz</button>
               <div className={`connection-indicator ${connectionStatus !== 'connected' && 'disconnected'}`}>
                 <span>({connectionStatus})</span>
               </div>

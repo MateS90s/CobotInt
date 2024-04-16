@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import ROSLIB from 'roslib';
+import SliderInput from './PilotElements/SliterInput';
+import ActualValue from '../Miscellaneous/ActualValue';
+import './Pilot.scss';
+import '../ComponentStylesMain.scss';
 
-import './Pilot.scss'
-import '../ComponentStylesMain.scss'
 
 
-function Pilot({ connectionStatus }) {
+function Pilot({ ros, connectionStatus }) {
     const [messages, setMesseges] = useState([]);
 
+   
     useEffect(() => {
    if (connectionStatus === 'connected') {
         // Tworzenie obiektu listenera do odbierania wiadomości 
-        const ros = new ROSLIB.Ros({ url: "ws://localhost:9091" });
         const my_topic_listener = new ROSLIB.Topic({
             ros,
             name: "/my_topic",
@@ -25,30 +27,30 @@ function Pilot({ connectionStatus }) {
         });
 
 
-        // Tworzenie obiektu publishera do nadawania wiadomości 
-        const my_topic_publisher = new ROSLIB.Topic({
-        ros,
-        name: "/publishing_topic",
-        messageType: "std_msgs/String",
-        })
-        // Dodanie obsługi kliknięcia przycisku "UP"
-        const handelUpButtonClick = () => {
-            const helloMessage = new ROSLIB.Message({
-                data: 'Naciśnięte UP'
-            });
-            my_topic_publisher.publish(helloMessage);
-        };
+        // // Tworzenie obiektu publishera do nadawania wiadomości 
+        // const my_topic_publisher = new ROSLIB.Topic({
+        // ros,
+        // name: "/publishing_topic",
+        // messageType: "std_msgs/String",
+        // })
+        // // Dodanie obsługi kliknięcia przycisku "UP"
+        // const handelUpButtonClick = () => {
+        //     const helloMessage = new ROSLIB.Message({
+        //         data: 'Naciśnięte UP'
+        //     });
+        //     my_topic_publisher.publish(helloMessage);
+        // };
 
-        const upButton = document.getElementById("up-button");
-        upButton.addEventListener("click", handelUpButtonClick);
+        // const upButton = document.getElementById("up-button");
+        // upButton.addEventListener("click", handelUpButtonClick);
 
         //Zakończenie fukcji - zakończenie subskrybcji listenerów po odmontowywaniu komponentu
         return () => {
             my_topic_listener.unsubscribe();
-            upButton.removeEventListener("click", handelUpButtonClick)
+            //upButton.removeEventListener("click", handelUpButtonClick)
         };
     }
-}, [connectionStatus]);
+}, [connectionStatus, ros]);
   
 
   return (
@@ -64,6 +66,13 @@ function Pilot({ connectionStatus }) {
             </div>
         </>
       ) : ( <p>Brak połączenia z ROSem</p> )}     
+     <SliderInput 
+     ros={ros}
+     connectionStatus={connectionStatus}
+     />
+    <ActualValue
+     ros={ros}
+     />
     </div>
   );
 }

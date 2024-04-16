@@ -6,29 +6,65 @@ import StartPage from './components/Content/StartPage/StartPage';
 import Logging from './components/Content/Logging/Logging'
 import Pilot from './components/Content/Pilot/Pilot'
 import ProgramBuilder from './components/Content/ProgramBuilder/ProgramBuilder'
+import ROSLIB from 'roslib';
 
 
 
 
 function App() {
 
-  //Przekazanie statusu z TopBar do Pilota
-  const [connectionStatus, setConnectionStatus] = useState('disconnected');
 
-  const handleConnectionStatusChange = (status) => {
-    setConnectionStatus(status);
-  }
+  //Połączenie z ROSem   
+  const [ros, setRos] = useState(null);
+  const [connectionStatus, setConnectionStatus] = useState('disconnected')
+  
+
+
+  const connectionToRosbridge = () => {
+    const newRos = new ROSLIB.Ros({ url: "ws://localhost:9091" });
+  
+
+    newRos.on("connection", () => {
+        setConnectionStatus("connected");
+    });
+
+    newRos.on("error", (error) => {
+      setConnectionStatus(`errored out (${error})`);
+    });
+
+    newRos.on("close", () => {
+      setConnectionStatus("closed");
+    });
+
+    setRos(newRos);
+  };
+
+  const disconnectFromRosbridge = () => {
+    if (ros) {
+      ros.close();
+      setRos(null);
+      setConnectionStatus("disconnected");
+    }
+  };
+
 
   return (
     <Router>
       <div className="app-container">
-        <TopBar onConnectionStatusChange={handleConnectionStatusChange} />
+        <TopBar 
+          connectionStatus={connectionStatus}
+          connectButton={connectionToRosbridge}
+          disconnecttButton={disconnectFromRosbridge}
+          />
         <LeftBar />
         <div>
         <Routes>
             <Route path="/" element={<StartPage />} />  
             <Route path="/logging" element={<Logging />} />
-            <Route path="/pilot" element={<Pilot connectionStatus={connectionStatus} />} />
+            <Route path="/pilot" element={<Pilot 
+            ros={ros}
+            connectionStatus={connectionStatus}
+            />} />
             <Route path="/program-builder" element={<ProgramBuilder />} />
         </Routes>
         </div>
