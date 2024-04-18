@@ -1,6 +1,9 @@
 import React, { useState, useEffect} from 'react';
 import ROSLIB from 'roslib';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight  } from '@fortawesome/free-solid-svg-icons';
+
 function SliderInput ({ros, connectionStatus}) {
     const [sliderValue, setSliderValue] = useState(0)
 
@@ -51,19 +54,25 @@ return () => {
 
 
     return (
-        <div>
-        <input
-          id = "slider_"
-          type="range"
-          min={0}
-          max={360}
-          step={0.1}
-          value={sliderValue}
-          onChange={handleSliderChange}
-        />
-        
-        <p>Aktualna wartość suwaka: {sliderValue}</p>
-        <button id="button_">Wyślij</button>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <output id="value" style={{ color: '#007bff', width: '50px', textAlign: 'center' }}>
+                <strong>{sliderValue.toFixed(2)}</strong>
+            </output>
+            <div>
+                <input
+                id="slider_"
+                type="range"
+                min={-Math.PI}
+                max={Math.PI}
+                step={0.1}
+                value={sliderValue.toFixed(2)}
+                onChange={handleSliderChange}
+                style={{ marginRight: '10px' }} 
+                />
+                <button id="button_" style={{ marginRight: '10px', border: "0" }}>
+                    <FontAwesomeIcon icon={faArrowRight} style={{ color: '#007bff', fontSize: '2em' }} />
+                </button>
+            </div>
         </div>
     )
 }

@@ -9,7 +9,7 @@ function ActualValue ({ros, connectionStatus}) {
         //Tworzenie obiektu listenera do odbierania wartości
         const my_topic_listener = new ROSLIB.Topic({
             ros,
-            name: "/joint_state_publisher",
+            name: "/response_topic",
             messageType: "std_msgs/Float64",
         });
 
@@ -26,7 +26,9 @@ function ActualValue ({ros, connectionStatus}) {
 
 return (
     <div>
-        <output id="value">Wartość w ROS2: {actualValue}</output>
+        <output id="value" style={{ color: 'green', width: '50px', textAlign: 'center' }}>
+            <strong>{actualValue.toFixed(2)}</strong>
+        </output>
     </div>
 );
 
