@@ -1,0 +1,23 @@
+.slider {
+    display: flex;
+    align-items: center;
+}
+
+.outputValue {
+    color: #007bff;
+    width: 50px;
+    text-align: center;
+}
+.value-animation {
+    color: green;
+    width: 50px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s; /* Dodaj efekt przejścia */
+}
+
+.value-animation.read {
+    transform: scale(1.2);
+    
+     
+}

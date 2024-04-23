@@ -1,0 +1,15 @@
+.button-animation {
+    margin-right: 10px;
+    border: 0;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* Dodaj efekt przejścia */
+}
+
+.button-animation.clicked {
+    transform: scale(0.6);
+}
+
+.icon {
+    color: #007bff;
+    font-size: 2em;
+}

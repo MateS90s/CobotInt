@@ -1,11 +1,13 @@
 import React, { useState, useEffect} from 'react';
 import ROSLIB from 'roslib';
+import './SliderInput.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 
 function SliderInput ({ros, connectionStatus}) {
     const [sliderValue, setSliderValue] = useState(0)
+    const [buttonClicked, setButtonClicked] = useState(false)
 
 // Dodanie obsługi slidera
 const handleSliderChange = (event) => {
@@ -23,7 +25,7 @@ const handleSliderChange = (event) => {
         })
 
 
-    const slider = document.getElementById("slider_");
+    const slider = document.getElementById("slider");
     slider.addEventListener("input", handleSliderChange);
 
 
@@ -36,11 +38,16 @@ const handleSliderChange = (event) => {
         } else {
             console.log("Brak połączenia z ROSem");
         }
-
+        //Animacja przyciśnięcia przycisku wysyłającego wartość
+        setButtonClicked(true); 
+        setTimeout(() => {
+            setButtonClicked(false);
+        }, 300);
     };
 
-    const upButton = document.getElementById("button_");
+    const upButton = document.getElementById("button");
     upButton.addEventListener("click", handelUpButtonClick);
+  
 
 return () => {
     slider.removeEventListener("input", handleSliderChange)
@@ -54,13 +61,13 @@ return () => {
 
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-            <output id="value" style={{ color: '#007bff', width: '50px', textAlign: 'center' }}>
+        <div className="slider">
+            <output id="value" className="outputValue">
                 <strong>{sliderValue.toFixed(2)}</strong>
             </output>
             <div>
                 <input
-                id="slider_"
+                id="slider"
                 type="range"
                 min={-Math.PI}
                 max={Math.PI}
@@ -69,8 +76,11 @@ return () => {
                 onChange={handleSliderChange}
                 style={{ marginRight: '10px' }} 
                 />
-                <button id="button_" style={{ marginRight: '10px', border: "0" }}>
-                    <FontAwesomeIcon icon={faArrowRight} style={{ color: '#007bff', fontSize: '2em' }} />
+                <button 
+                    id="button" 
+                    className={buttonClicked ? "button-animation clicked" : "button-animation"}
+                >                   
+                <FontAwesomeIcon icon={faArrowRight} className="icon" />
                 </button>
             </div>
         </div>
