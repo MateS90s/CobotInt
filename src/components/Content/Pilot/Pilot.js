@@ -7,6 +7,8 @@ import '../ComponentStylesMain.scss';
 
 
 function Pilot({ ros, connectionStatus }) {
+  const [jointValues, setJointValues] = useState(Array(7).fill(0));
+  const jointNames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7'];
 
   return (
     <div className="pilot-content"> 
@@ -17,79 +19,11 @@ function Pilot({ ros, connectionStatus }) {
               <SliderInput 
                 ros={ros}
                 connectionStatus={connectionStatus}
-                jointToChange = {0}
+                jointNr = {0}
               />
               <ActualValue
                 ros={ros}
-                jointValue = {0}
-              />
-            </div>
-
-            <div className='slider-row'> 
-              <SliderInput 
-                ros={ros}
-                connectionStatus={connectionStatus}
-                jointToChange = {1}
-              />
-              <ActualValue
-                ros={ros}
-                jointValue = {1}
-              />
-            </div>
-
-            <div className='slider-row'> 
-              <SliderInput 
-                ros={ros}
-                connectionStatus={connectionStatus}
-                jointToChange = {2}
-              />
-              <ActualValue
-                ros={ros}
-                jointValue = {2}
-              />
-            </div>
-            <div className='slider-row'> 
-              <SliderInput 
-                ros={ros}
-                connectionStatus={connectionStatus}
-                jointToChange = {3}
-              />
-              <ActualValue
-                ros={ros}
-                jointValue = {3}
-              />
-            </div>
-            <div className='slider-row'> 
-              <SliderInput 
-                ros={ros}
-                connectionStatus={connectionStatus}
-                jointToChange = {4}
-              />
-              <ActualValue
-                ros={ros}
-                jointValue = {4}
-              />
-            </div>
-            <div className='slider-row'> 
-              <SliderInput 
-                ros={ros}
-                connectionStatus={connectionStatus}
-                jointToChange = {5}
-              />
-              <ActualValue
-                ros={ros}
-                jointValue = {5}
-              />
-            </div>
-            <div className='slider-row'> 
-              <SliderInput 
-                ros={ros}
-                connectionStatus={connectionStatus}
-                jointToChange = {6}
-              />
-              <ActualValue
-                ros={ros}
-                jointValue = {6}
+                jointNr = {0}
               />
             </div>
 

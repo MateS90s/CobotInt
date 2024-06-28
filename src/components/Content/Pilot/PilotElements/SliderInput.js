@@ -5,40 +5,51 @@ import './SliderInput.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 
-function SliderInput ({ros, connectionStatus, jointToChange}) {
+function SliderInput ({ros, connectionStatus, jointNr}) {
     const [sliderValue, setSliderValue] = useState(0);
     const [buttonClicked, setButtonClicked] = useState(false);
 
-// Dodanie obsługi slidera
+// Sider - obsługa 2
 const handleSliderChange = (event) => {
     const newValue = parseFloat(event.target.value)
     setSliderValue(newValue);
 }
 
  useEffect(() => {
+    if (!ros) return;
 
     // Tworzenie obiektu publishera do nadawania wiadomości 
     const my_topic_publisher = new ROSLIB.Topic({
         ros,
-        name: "/joint_state_publisher",
-        messageType: "std_msgs/Float64MultiArray",
+        name: '/lbr/joint_trajectory_controller/joint_trajectory',
+        messageType: 'trajectory_msgs/JointTrajectory',
         })
 
-
-    const slider = document.getElementById(`slider-${jointToChange}`);
+    // Sider - obsługa 1
+    const slider = document.getElementById(`slider-${jointNr}`);
     slider.addEventListener("input", handleSliderChange);
 
 
-    const handelUsedButtonClick = () => {
+
+    const handleUsedButtonClick = () => {
         if (connectionStatus === 'connected') {
+            // Tworzenie wiadomości JointTrajectory
+            const jointNames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7'];
             const valueMessage = new ROSLIB.Message({
-                data: [0, 0, 0, 0, 0, 0, 0]
+                //joint_names: [jointNames[jointNr]],
+                joint_names: jointNames,
+                points: [{
+                    positions: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+                    time_from_start: { sec: 2, nanosec: 0 } // Ustawienie czasu, możesz to dostosować
+                }]
             });
-            valueMessage.data[jointToChange] = parseFloat(sliderValue)
             my_topic_publisher.publish(valueMessage);
+            console.log(`Published value ${sliderValue} to ${jointNames[jointNr]}`);
         } else {
-            console.log("Brak połączenia z ROSem");
+            console.log('Brak połączenia z ROSem');
         }
+
+        
         //Animacja przyciśnięcia przycisku wysyłającego wartość
         setButtonClicked(true); 
         setTimeout(() => {
@@ -46,29 +57,29 @@ const handleSliderChange = (event) => {
         }, 300);
     };
 
-    const usedButton = document.getElementById(`button-${jointToChange}`);
-    usedButton.addEventListener("click", handelUsedButtonClick);
+    const usedButton = document.getElementById(`button-${jointNr}`);
+    usedButton.addEventListener("click", handleUsedButtonClick);
   
 
 return () => {
     slider.removeEventListener("input", handleSliderChange)
-    usedButton.removeEventListener("click", handelUsedButtonClick)
+    usedButton.removeEventListener("click", handleUsedButtonClick)
 };
 
  
-}, [ros, connectionStatus, sliderValue, jointToChange])
+}, [ros, connectionStatus, sliderValue, jointNr])
 
 
 
 
     return (
         <div className="slider">
-            <output id={`slider-value-${jointToChange}`} className="outputValue">
+            <output id={`slider-value-${jointNr}`} className="outputValue">
                 <strong>{sliderValue.toFixed(2)}</strong>
             </output>
             <div>
                 <input
-                id={`slider-${jointToChange}`}
+                id={`slider-${jointNr}`}
                 type="range"
                 min={-Math.PI}
                 max={Math.PI}
@@ -78,7 +89,7 @@ return () => {
                 style={{ marginRight: '10px' }} 
                 />
                 <button 
-                    id={`button-${jointToChange}`} 
+                    id={`button-${jointNr}`} 
                     className={buttonClicked ? "button-animation clicked" : "button-animation"}
                 >                   
                 <FontAwesomeIcon icon={faArrowRight} className="icon" />
