@@ -6,6 +6,7 @@ export default class LbrTopics {
     this.jointTrajectoryPublisher = null;
     this.jointStatesListener = null;
     this.jointStatesCallbacks = [];
+    this.isSubscribed = false;
 
     this.initializePublishers();
     this.initializeListeners();
@@ -70,17 +71,19 @@ export default class LbrTopics {
 
     this.jointStatesCallbacks.push(callback); //dodanie funkcji z pilota setActualJointValues jako nowy element tablicy
    
-    if (this.jointStatesCallbacks.length === 1) { //sprawdzenie czy lista callbackow jest równa 1, zeby stworzyć tylko jedną subskrypcję. I tak w pilocie na razie będize albo 0 albo 1 element - to że jest to tablica, to otwarcie tej biblioteki do pracy z większą ilością połączeń z ROSem lub np. dodać looger, caudie 3,5 o tym wspominał - doczytaj
-      //TUTAJ KONIEC - pytanie do claudie o to co jak będą 2 callbacki lub więcej)
+    if (!this.isSubscribed) { 
       this.jointStatesListener.subscribe(this.handleJointStatesMessage);
+      this.isSubscribed = true;
     }
-    return () => this.unsubscribeFromJointStates(callback); //odsybksrybowanie które nie jest realizowane tylko wrzucane w pilocie do zmienne unsubscribe do przyszłego użytku
+
+    return () => this.unsubscribeFromJointStates(callback); //odsubksrybowanie które nie jest realizowane tylko wrzucane w pilocie do zmienne unsubscribe do przyszłego użytku
   }
 
   unsubscribeFromJointStates = (callback) => {
     this.jointStatesCallbacks = this.jointStatesCallbacks.filter(cb => cb !== callback);
-    if (this.jointStatesCallbacks.length === 0 && this.jointStatesListener) {
+    if (this.jointStatesCallbacks.length === 0 && this.isSubscribed) {
       this.jointStatesListener.unsubscribe(this.handleJointStatesMessage);
+      this.isSubscribed= false;
     }
   }
 

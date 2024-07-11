@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import LbrTopics from '../LinkModules/LbrTopics.js';
 import SliderInput from './PilotElements/SliderInput';
 import ActualValue from '../Miscellaneous/ActualValue';
@@ -9,22 +9,41 @@ function Pilot({ ros, connectionStatus }) {
   const [jointValues, setJointValues] = useState(Array(7).fill(0));
   const [actualJointValues, setActualJointValues] = useState(Array(7).fill(0));
   const [lbrTopics, setLbrTopics] = useState(null);
-  const jointNames = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7'];
-
+  const jointNames = ['A1', 'A2', 'A4', 'A3', 'A5', 'A6', 'A7'];
+  const initializedRef = useRef(false);
 
 //Odbieranie wiadomości
   useEffect(() => {
-    if (ros && connectionStatus === 'connected') {
+    if (ros && connectionStatus === 'connected' && !initializedRef.current) {
       const newLbrTopics = new LbrTopics(ros);
       setLbrTopics(newLbrTopics);
 
-      const unsubscribe = newLbrTopics.subscribeToJointStates(setActualJointValues);
-      
+      const initializeJointValues = (values) => {
+        setJointValues(values);
+        setActualJointValues(values);
+        initializedRef.current = true;
+      }
+      //Deklaracja elmentów do komunikacji z rosem (klasa LbrTOpics)
+      const unsubscribes = [
+        newLbrTopics.subscribeToJointStates((values) => {
+          if (!initializedRef.current) {
+            initializeJointValues(values);
+          } else {
+            setActualJointValues(values);
+          }
+       })
+        //tutaj wstawiaj dodatkowe elementy do komunikacji z ROSem
+      ];
+
       return () => {
-        if (unsubscribe) unsubscribe();
+        unsubscribes.forEach(unsubscribe => {
+          if (unsubscribe) unsubscribe();
+        });
       };
     }
   }, [ros, connectionStatus]);
+
+
 
 
 //Wysyłanie wartości
@@ -53,11 +72,12 @@ function Pilot({ ros, connectionStatus }) {
                 <SliderInput
                   value={jointValues[index]}
                   onChange={(newValue) => handleSliderChange(index, newValue)}
+                  jointName={jointNames[index]}
                 />
                 <ActualValue value={actualJointValues[index]} />
               </div>
             ))}
-            <button onClick={publishJointValues}>Wyślij</button>
+            <button className="outputValue" onClick={publishJointValues}>Wyślij</button>
           </div>
       ) : (
         <p>Brak połączenia z ROSem</p>

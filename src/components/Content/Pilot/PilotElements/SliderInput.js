@@ -2,7 +2,7 @@ import React from 'react';
 import './SliderInput.css';
 
 
-function SliderInput({ value, onChange, jointNr }) {
+function SliderInput({ value, onChange, jointNr, jointName }) {
   const handleSliderChange = (event) => {
     const newValue = parseFloat(event.target.value);
     onChange(newValue); //onChange jest funkcją propse, której wywołanie powoduje aktualizacje wartości NADRZĘDNEGO komponentu
@@ -10,6 +10,7 @@ function SliderInput({ value, onChange, jointNr }) {
 
   return (
     <div className="slider">
+      <p className="outputValue"><strong>{jointName}</strong></p>
       <output id={`slider-value-${jointNr}`} className="outputValue">
         <strong>{value.toFixed(2)}</strong>
       </output>
