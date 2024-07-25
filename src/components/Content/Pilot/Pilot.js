@@ -52,7 +52,7 @@ function Pilot({ ros, connectionStatus }) {
     newJointValues[index] = newValue;
     setJointValues(newJointValues);
   };
-
+  //Prosty ruch przegubów 
   const publishJointValues = () => {
     if (lbrTopics) {
       console.log('Publishing joint values:', jointValues);
@@ -61,7 +61,16 @@ function Pilot({ ros, connectionStatus }) {
       console.error('LbrTopics not initialized. Unable to publish joint values.');
     }
   };
-  
+  //Planowany ruch przegubów
+  const publishMotionPlanRequest = () => {
+    if (lbrTopics) {
+      console.log('Planning and executing motion:', jointValues);
+      lbrTopics.planAndExecuteMotion(jointNames, jointValues, actualJointValues)
+    } else {
+      console.error('LbrTopics not initialized. Unable to plan and execute motion.');
+    }
+  };
+
   return (
     <div className="pilot-content"> 
       <h1>Pilot</h1>
@@ -78,7 +87,8 @@ function Pilot({ ros, connectionStatus }) {
               </div>
             ))}
             <button className="outputValue" onClick={publishJointValues}>Wyślij</button>
-          </div>
+            <button className="outputValue" onClick={publishMotionPlanRequest}>Zaplanuj i wykonaj</button>
+          </div>   
       ) : (
         <p>Brak połączenia z ROSem</p>
       )}

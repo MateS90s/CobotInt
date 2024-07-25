@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import TopBar from './components/TopBar/TopBar';
 import LeftBar from './components/LeftBar/LeftBar';
@@ -8,24 +8,15 @@ import Pilot from './components/Content/Pilot/Pilot'
 import ProgramBuilder from './components/Content/ProgramBuilder/ProgramBuilder'
 import ROSLIB from 'roslib';
 
-
-
-
 function App() {
-
-
-  //Połączenie z ROSem   
   const [ros, setRos] = useState(null);
-  const [connectionStatus, setConnectionStatus] = useState('disconnected')
-  
+  const [connectionStatus, setConnectionStatus] = useState('disconnected');
 
-
-  const connectionToRosbridge = () => {
-    const newRos = new ROSLIB.Ros({ url: "ws://localhost:9091" });
-  
+  const connectionToRosbridge = (address) => {
+    const newRos = new ROSLIB.Ros({ url: address });
 
     newRos.on("connection", () => {
-        setConnectionStatus("connected");
+      setConnectionStatus("connected");
     });
 
     newRos.on("error", (error) => {
@@ -47,26 +38,25 @@ function App() {
     }
   };
 
-
   return (
     <Router>
       <div className="app-container">
-        <TopBar 
+        <TopBar
           connectionStatus={connectionStatus}
           connectButton={connectionToRosbridge}
           disconnecttButton={disconnectFromRosbridge}
-          />
+        />
         <LeftBar />
         <div>
-        <Routes>
-            <Route path="/" element={<StartPage />} />  
+          <Routes>
+            <Route path="/" element={<StartPage />} />
             <Route path="/logging" element={<Logging />} />
-            <Route path="/pilot" element={<Pilot 
-            ros={ros}
-            connectionStatus={connectionStatus}
+            <Route path="/pilot" element={<Pilot
+              ros={ros}
+              connectionStatus={connectionStatus}
             />} />
             <Route path="/program-builder" element={<ProgramBuilder />} />
-        </Routes>
+          </Routes>
         </div>
       </div>
     </Router>

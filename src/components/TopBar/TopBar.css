@@ -6,56 +6,85 @@
   width: 100%;
   background-color: #999;
   font-family: 'Arial', sans-serif; /* Wybór czcionki */
-    z-index: 1000; /* Ustawienie wysokiej wartości z-index */
+  z-index: 1000; /* Ustawienie wysokiej wartości z-index */
+  display: flex;
+  justify-content: center; /* Wyśrodkowanie całej zawartości */
+  align-items: center;
 }
 
+nav {
+  width: 100%;
+}
+
+.menu-list {
+  display: flex;
+  justify-content: space-between; /* Rozdzielenie elementów */
+  align-items: center;
+  width: 100%;
+  padding: 0 20px; /* Dodanie przestrzeni po bokach */
+  margin: 0;
+}
 
 nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  nav ul li {
-    display: inline;
-  }
-  
-  nav ul li a {
-    display: inline-block;
-    padding: 10px 20px;
-    text-decoration: none;
-    color: #fff; /* Kolor tekstu */
-    cursor: pointer; /* Ustawienie standardowego kursora */
-    font-size: 18px; /* Rozmiar tekstu */
-  }
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
 
-  .menu-list li.logo {
-    float: right;
-    padding: 10px 20px;
-  }
-  
-  .menu-list li h1 {
-      margin: 0; /* Usunięcie marginesu dla h1 */
+nav ul li {
+  display: inline;
+}
+
+nav ul li a, nav ul li .link {
+  display: inline-block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #fff; /* Kolor tekstu */
+  cursor: pointer; /* Standardowy kursor */
+  font-size: 18px; /* Rozmiar tekstu */
+}
+
+.menu-list li.logo {
+  margin-left: auto; /* Przesunięcie logo na prawo */
+}
+
+.menu-list li h1 {
+  margin: 0; /* Usunięcie marginesu dla h1 */
   font-family: 'Roboto', sans-serif; /* Wybór innej czcionki */
   color: #ffcc00; /* Inny kolor tekstu */
   font-size: 24px; /* Inny rozmiar tekstu */
-  }
+}
 
-  .connection-indicator {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: green;
-    margin-left: 10px;
-    display: inline-block;
-    }
+.connection-module {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
 
-    .connection-indicator span {
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 25px; /* Dodatkowy margines między kropką a napisem */
-    }
+.connection-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: green;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.connection-indicator span {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 25px; /* Dodatkowy margines między kropką a napisem */
+}
 
 .disconnected {
-    background-color: red;
+  background-color: red;
+}
+
+.address-input {
+  margin: 0 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
