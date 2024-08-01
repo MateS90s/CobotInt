@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import LbrTopics from '../LinkModules/LbrTopics.js';
 import SliderInput from './PilotElements/SliderInput';
 import ActualValue from '../Miscellaneous/ActualValue';
-import './Pilot.scss';
-import '../ComponentStylesMain.scss';
 
 function Pilot({ ros, connectionStatus }) {
   const [jointValues, setJointValues] = useState(Array(7).fill(0));
@@ -12,7 +10,7 @@ function Pilot({ ros, connectionStatus }) {
   const jointNames = ['A1', 'A2', 'A4', 'A3', 'A5', 'A6', 'A7'];
   const initializedRef = useRef(false);
 
-//Odbieranie wiadomości
+  // Odbieranie wiadomości
   useEffect(() => {
     if (ros && connectionStatus === 'connected' && !initializedRef.current) {
       const newLbrTopics = new LbrTopics(ros);
@@ -23,7 +21,7 @@ function Pilot({ ros, connectionStatus }) {
         setActualJointValues(values);
         initializedRef.current = true;
       }
-      //Deklaracja elmentów do komunikacji z rosem (klasa LbrTOpics)
+      // Deklaracja elementów do komunikacji z ROSem
       const unsubscribes = [
         newLbrTopics.subscribeToJointStates((values) => {
           if (!initializedRef.current) {
@@ -31,8 +29,8 @@ function Pilot({ ros, connectionStatus }) {
           } else {
             setActualJointValues(values);
           }
-       })
-        //tutaj wstawiaj dodatkowe elementy do komunikacji z ROSem
+        })
+        // Tutaj wstawiaj dodatkowe elementy do komunikacji z ROSem
       ];
 
       return () => {
@@ -43,16 +41,14 @@ function Pilot({ ros, connectionStatus }) {
     }
   }, [ros, connectionStatus]);
 
-
-
-
-//Wysyłanie wartości
+  // Wysyłanie wartości
   const handleSliderChange = (index, newValue) => {
     const newJointValues = [...jointValues];
     newJointValues[index] = newValue;
     setJointValues(newJointValues);
   };
-  //Prosty ruch przegubów 
+
+  // Prosty ruch przegubów 
   const publishJointValues = () => {
     if (lbrTopics) {
       console.log('Publishing joint values:', jointValues);
@@ -61,36 +57,49 @@ function Pilot({ ros, connectionStatus }) {
       console.error('LbrTopics not initialized. Unable to publish joint values.');
     }
   };
-  //Planowany ruch przegubów
+
+  // Planowany ruch przegubów
   const publishMotionPlanRequest = () => {
     if (lbrTopics) {
       console.log('Planning and executing motion:', jointValues);
-      lbrTopics.planAndExecuteMotion(jointNames, jointValues, actualJointValues)
+      lbrTopics.planAndExecuteMotion(jointNames, jointValues, actualJointValues);
     } else {
       console.error('LbrTopics not initialized. Unable to plan and execute motion.');
     }
   };
 
   return (
-    <div className="pilot-content"> 
-      <h1>Pilot</h1>
+    <div className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
+      <h1 className="text-3xl font-semibold text-gray-800">Pilot</h1>
       {connectionStatus === 'connected' ? (
-          <div className='sliders'> 
-            {jointNames.map((jointName, index) => (
-              <div key={jointName} className='slider-row'>
-                <SliderInput
-                  value={jointValues[index]}
-                  onChange={(newValue) => handleSliderChange(index, newValue)}
-                  jointName={jointNames[index]}
-                />
-                <ActualValue value={actualJointValues[index]} />
-              </div>
-            ))}
-            <button className="outputValue" onClick={publishJointValues}>Wyślij</button>
-            <button className="outputValue" onClick={publishMotionPlanRequest}>Zaplanuj i wykonaj</button>
-          </div>   
+        <div className='space-y-4'>
+          {jointNames.map((jointName, index) => (
+            <div key={jointName} className='flex items-center space-x-4 mb-2'>
+              <SliderInput
+                value={jointValues[index]}
+                onChange={(newValue) => handleSliderChange(index, newValue)}
+                jointName={jointNames[index]}
+              />
+              <ActualValue value={actualJointValues[index]} />
+            </div>
+          ))}
+          <div className='space-x-2'>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={publishJointValues}
+            >
+              Wyślij
+            </button>
+            <button
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              onClick={publishMotionPlanRequest}
+            >
+              Zaplanuj i wykonaj
+            </button>
+          </div>
+        </div>
       ) : (
-        <p>Brak połączenia z ROSem</p>
+        <p className="text-red-500">Brak połączenia z ROSem</p>
       )}
     </div>
   );

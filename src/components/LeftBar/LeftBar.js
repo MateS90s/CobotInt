@@ -1,25 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 
-import './LeftBar.css'
-
-function Pilot() {
+function LeftBar({ isOpen, setIsOpen }) {
   return (
-    <div className="left-bar">
-      <h1>Operacje</h1>
-      <ul>
-        <li>el1</li>
-        <li>el2</li>
-        <li>el3</li>
-        <li>el4</li>
-        <li>el5</li>
-        <li>el6</li>
-        <li>el7</li>
-        <li>el8</li>
-        <li>el9</li>
-        <li>el10</li>
-      </ul>
+    <div className={`bg-gray-800 text-white ${isOpen ? 'w-64' : 'w-16'} transition-all duration-300 ease-in-out`}>
+      <div className="p-4">
+        <Menu className="h-8 w-8 cursor-pointer" onClick={() => setIsOpen(!isOpen)} />
+      </div>
+      {isOpen && (
+        <nav className="mt-8">
+          <Link to="/" className="block py-2 px-4 hover:bg-gray-700">Dashboard</Link>
+          <Link to="/pilot" className="block py-2 px-4 hover:bg-gray-700">Manual control</Link>
+          <Link to="/program-builder" className="block py-2 px-4 hover:bg-gray-700">Program builder</Link>
+          <Link to="/program-builder" className="block py-2 px-4 hover:bg-gray-700">Settings</Link>
+        </nav>
+      )}
     </div>
   );
 }
 
-export default Pilot
+export default LeftBar;
