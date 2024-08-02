@@ -1,12 +1,10 @@
 import React from 'react';
 
-import './ProgramBuilder.scss'
-import '../ComponentStylesMain.scss'
 
 function ProgramBuilder() {
   return (
-    <div className='programBuilder-content'>
-      <h1>ProgramBuilder</h1>
+    <div className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
+      <h1 className="text-3xl font-semibold text-gray-800">Programowanie robota</h1>
     </div>
   );
 }

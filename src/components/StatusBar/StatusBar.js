@@ -12,7 +12,6 @@ function StatusBar({ connectionStatus, connectToRos, disconnectFromRos }) {
   };
 
   return (
-    <footer className="bg-gray-100 border-t border-gray-300 fixed bottom-0 w-full">
       <div className="flex justify-between items-center px-4 py-2">
         <div className="flex items-center space-x-2">
           <span>Status: </span>
@@ -44,13 +43,12 @@ function StatusBar({ connectionStatus, connectToRos, disconnectFromRos }) {
           </button>
         </div>
         <div>
-          <span>Mode: Automatic</span>
+          <span>Mode: --Auto/Hand--</span>
         </div>
         <div>
-          <span>Task: Painting</span>
+          <span>Task: --Paint/Weld--</span>
         </div>
       </div>
-    </footer>
   );
 }
 
