@@ -14,6 +14,7 @@ function LeftBar({ isSidebarOpen, setIsSidebarOpen }) {
           <nav className="mt-8">
             <Link to="/" className="block py-2 px-4 hover:bg-gray-700">Dashboard</Link>
             <Link to="/pilot" className="block py-2 px-4 hover:bg-gray-700">Manual control</Link>
+            <Link to="/smart-control" className="block py-2 px-4 hover:bg-gray-700">Smart control</Link>
             <Link to="/program-builder" className="block py-2 px-4 hover:bg-gray-700">Program builder</Link>
             <Link to="/program-builder" className="block py-2 px-4 hover:bg-gray-700">Settings</Link>
           </nav>

@@ -8,6 +8,7 @@ import LeftBar from './components/LeftBar/LeftBar';
 import StartPage from './components/Content/Dashboard/Dashboard';
 import Logging from './components/Content/Logging/Logging';
 import Pilot from './components/Content/Pilot/Pilot';
+import SmartControl from './components/Content/SmartControl/SmartControl';
 import ProgramBuilder from './components/Content/ProgramBuilder/ProgramBuilder';
 import StatusBar from './components/StatusBar/StatusBar';
 
@@ -56,6 +57,7 @@ function App() {
                 <Route path="/" element={<StartPage />} />
                 <Route path="/logging" element={<Logging />} />
                 <Route path="/pilot" element={<Pilot ros={ros} connectionStatus={connectionStatus} />} />
+                <Route path="/smart-control" element={<SmartControl />} />
                 <Route path="/program-builder" element={<ProgramBuilder />} />
               </Routes>
             </div>
