@@ -43,7 +43,7 @@ function Pilot({ ros, connectionStatus }) {
     }
 
     // Wczytaj zawartość pliku URDF
-    fetch(process.env.PUBLIC_URL + '/robot_description/sky7.urdf')
+    fetch(process.env.PUBLIC_URL + '/robot_description/sja.urdf')
     .then(response => response.text())
     .then(data => setUrdfContent(data));
     
