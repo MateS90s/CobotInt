@@ -1,6 +1,6 @@
 {
-  "homepage": "/interface",
-  "name": "cobinterface",
+  "name": "cobotint",
+  "homepage": "https://mates90s.github.io/CobotInt",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
