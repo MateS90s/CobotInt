@@ -32,7 +32,7 @@ function TopBar({ connectionStatus }) {
         ) : (
           <Unplug className="h-6 w-6 text-red-500" />
         )}
-        <span>{connectionStatus === 'connected' ? 'Połączono' : 'Rozłączono'}</span>
+        <span>{connectionStatus === 'connected' ? 'Connected' : 'Disconnected'}</span>
         <span>{formatTime(currentTime)}</span>
       </div>
     </div>

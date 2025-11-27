@@ -122,7 +122,7 @@ function Pilot({ ros, connectionStatus }) {
         </div>
       </div>
       {connectionStatus !== 'connected' && (
-        <p className="text-2xl text-red-500 animate-pulse">Brak połączenia z ROSem</p>
+        <p className="text-2xl text-red-500 animate-pulse">Not connected to ROS</p>
       )}
     </div>
   );
